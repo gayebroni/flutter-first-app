@@ -88,10 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           )
       ),
-      body: Center(
+      body: Container(
+        padding: const EdgeInsets.all(20),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: Center(
+          child: Column(
           // Column is also a layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -105,9 +107,24 @@ class _MyHomePageState extends State<MyHomePage> {
           // how it positions its children. Here we use mainAxisAlignment to
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          // horizontal)
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Container(
+              child: Column(
+                children: <Widget> [
+                  Row(
+                     children: [
+                       IconButton(
+                         onPressed: _linkToGame,
+                         icon: const Icon(Icons.volume_down)
+                       ),
+                       const Text("How many birds are there?")
+                     ],
+                  ),
+                ]
+              )
+            ),
             const Text(
               'You have played these games this many times:',
             ),
@@ -126,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-       // This trailing comma makes auto-formatting nicer for build methods.
+      ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

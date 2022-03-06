@@ -114,32 +114,77 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Column(
                 children: <Widget> [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                      children: [
                        IconButton(
                          onPressed: _linkToGame,
                          icon: const Icon(Icons.volume_down)
                        ),
-                       const Text("How many birds are there?")
+                       const Text("How many birds are there?"),
+                       IconButton(
+                         onPressed: _linkToGame,
+                         icon: const Icon(Icons.casino)
+                       )
                      ],
                   ),
+                  const TextField(
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.translate),
+                      hintText: 'Write translation...',
+                      helperText: 'Question translation',
+                      border: OutlineInputBorder(),
+                    )
+                  ),
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(top: 20),
+                    child: Row( // Make row dynamic based on die roll
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: const [
+                          Image(
+                            width: 72,
+                            image: NetworkImage(
+                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                          ),
+                          Image(
+                            width: 72,
+                            image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                          ),
+                          Image(
+                            width: 72,
+                            image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+                          ),
+                        ]
+
+                    )
+                  )
+                 
+
                 ]
               )
             ),
-            const Text(
-              'You have played these games this many times:',
-            ),
-            Text(
-              'Wordle: $_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-            IconButton(
-                onPressed: _linkToGame,
-                icon: const Icon(
-                    Icons.book,
-                    size: 40,
-                    color: Colors.amber
-                )
+            Container(
+                margin: const EdgeInsetsDirectional.only(top: 400),
+              child: Column (
+                children: <Widget> [
+                  const Text(
+                    'You have played these games this many times:',
+                  ),
+                  Text(
+                    'Wordle: $_counter',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  IconButton(
+                      onPressed: _linkToGame,
+                      icon: const Icon(
+                          Icons.book,
+                          size: 40,
+                          color: Colors.amber
+                      )
+                  )
+                ]
+              )
             )
+
           ],
         ),
       ),

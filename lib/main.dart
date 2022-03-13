@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -50,6 +52,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _imagesCount =  1 + Random().nextInt(5);
+
+  void _generateNumber () {
+    setState(() {
+      _imagesCount = 1 + Random().nextInt(5);
+    });
+  }
+
+  List<Image> _getBirdImages(count) {
+    List<Image> images = [];
+    for (int i = 0 ; i < count ; i++) {
+      images.add(const Image(
+        width: 72,
+        image: NetworkImage(
+            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
+      )
+      );
+    }
+    return images;
+  }
 
   void _linkToGame () async {
     setState(() {
@@ -122,7 +144,7 @@ class _MyHomePageState extends State<MyHomePage> {
                        ),
                        const Text("How many birds are there?"),
                        IconButton(
-                         onPressed: _linkToGame,
+                         onPressed: _generateNumber,
                          icon: const Icon(Icons.casino)
                        )
                      ],
@@ -139,22 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     margin: const EdgeInsetsDirectional.only(top: 20),
                     child: Row( // Make row dynamic based on die roll
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: const [
-                          Image(
-                            width: 72,
-                            image: NetworkImage(
-                                'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-                          ),
-                          Image(
-                            width: 72,
-                            image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-                          ),
-                          Image(
-                            width: 72,
-                            image: NetworkImage('https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-                          ),
-                        ]
-
+                        children: _getBirdImages(_imagesCount)
                     )
                   )
                  

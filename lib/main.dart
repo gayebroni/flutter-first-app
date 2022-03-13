@@ -52,12 +52,33 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  int _buttonsCount = 5;
   int _imagesCount =  1 + Random().nextInt(5);
+
 
   void _generateNumber () {
     setState(() {
-      _imagesCount = 1 + Random().nextInt(5);
+      _imagesCount = 1 + Random().nextInt(_buttonsCount);
     });
+  }
+
+  void _checkResult(result) {
+
+  }
+
+  List<IconButton> _getAnswerButtons(count) {
+    List<IconButton> buttons = [];
+    for (int i = 0 ; i < count ; i ++) {
+      /*
+      buttons.add(IconButton({
+          icon: const Icon(Icons.volume_down),
+          onPressed: _checkResult,
+        }
+        )
+      )
+      */
+    }
+    return buttons;
   }
 
   List<Image> _getBirdImages(count) {

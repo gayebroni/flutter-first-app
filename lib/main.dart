@@ -52,31 +52,37 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  int _buttonsCount = 5;
+  final int _buttonsCount = 5;
   int _imagesCount =  1 + Random().nextInt(5);
+  String _displayedAnswer = "";
 
 
   void _generateNumber () {
     setState(() {
       _imagesCount = 1 + Random().nextInt(_buttonsCount);
+      _displayedAnswer = "";
     });
   }
 
-  void _checkResult(result) {
-
+  void _validateUserResponse(answer) {
+    setState(() {
+      if (answer == _imagesCount) {
+        _displayedAnswer = "Correct";
+      } else {
+        _displayedAnswer = "Incorrect";
+      }
+    });
   }
 
-  List<IconButton> _getAnswerButtons(count) {
-    List<IconButton> buttons = [];
-    for (int i = 0 ; i < count ; i ++) {
-      /*
-      buttons.add(IconButton({
-          icon: const Icon(Icons.volume_down),
-          onPressed: _checkResult,
-        }
+  List<ElevatedButton> _getAnswerButtons() {
+    List<ElevatedButton> buttons = [];
+    for (int answer = 1 ; answer < _buttonsCount + 1 ; answer ++) {
+      buttons.add(
+          ElevatedButton(
+            onPressed: () { _validateUserResponse(answer); },
+            child: Text(answer.toString())
         )
-      )
-      */
+      );
     }
     return buttons;
   }
@@ -184,9 +190,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: _getBirdImages(_imagesCount)
                     )
+                  ),
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(top: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: _getAnswerButtons()
+                    )
+                  ),
+                  Container(
+                    margin: const EdgeInsetsDirectional.only(top: 20),
+                    child: Text(_displayedAnswer)
                   )
-                 
-
                 ]
               )
             ),

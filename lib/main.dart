@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:Counter/CountExercise.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -159,6 +160,9 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal)
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            const CountExercise(
+              question: "How many cats are there?"
+            ),
             Container(
               child: Column(
                 children: <Widget> [

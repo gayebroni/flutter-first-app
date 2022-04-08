@@ -161,7 +161,8 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const CountExercise(
-              question: "How many cats are there?"
+              question: "How many cats are there?",
+              imageURL: "https://www.nj.com/resizer/trKrPevwYnYiJ3pB9WfuU-NK4VU=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.nj.com/home/njo-media/width2048/img/somerset_impact/photo/22028904-large.jpg",
             ),
             Container(
               child: Column(

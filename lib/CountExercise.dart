@@ -1,11 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CountExercise extends StatefulWidget {
-  //const CountExercise(this.child);
-  //final Widget child;
-
-  const CountExercise({ required this.question});
+  const CountExercise({ required this.question, required this.imageURL});
+  final String imageURL;
   final String question;
 
   @override
@@ -13,8 +13,53 @@ class CountExercise extends StatefulWidget {
 }
 
 class _CountExerciseState extends State<CountExercise> {
+  int _imagesCount =  1 + Random().nextInt(5);
+  final int _buttonsCount = 5;
+  String _displayedAnswer = "";
 
   void _doNothing() async {
+  }
+
+  void _generateNumber () {
+    setState(() {
+      _imagesCount = 1 + Random().nextInt(_buttonsCount);
+      _displayedAnswer = "";
+    });
+  }
+
+  List<ElevatedButton> _getAnswerButtons() {
+    List<ElevatedButton> buttons = [];
+    for (int answer = 1 ; answer < _buttonsCount + 1 ; answer ++) {
+      buttons.add(
+          ElevatedButton(
+              onPressed: () { _validateUserResponse(answer); },
+              child: Text(answer.toString())
+          )
+      );
+    }
+    return buttons;
+  }
+
+  void _validateUserResponse(answer) {
+    setState(() {
+      if (answer == _imagesCount) {
+        _displayedAnswer = "Correct";
+      } else {
+        _displayedAnswer = "Incorrect";
+      }
+    });
+  }
+
+  List<Image> _getImages(count) {
+    List<Image> images = [];
+    for (int i = 0 ; i < count ; i++) {
+      images.add(Image(
+        width: 72,
+        image: NetworkImage(widget.imageURL),
+      )
+      );
+    }
+    return images;
   }
 
   @override
@@ -30,7 +75,7 @@ class _CountExerciseState extends State<CountExercise> {
           ),
           Text(widget.question),
           IconButton(
-              onPressed: _doNothing,
+              onPressed: _generateNumber,
               icon: const Icon(Icons.casino)
           )
         ],
@@ -43,6 +88,24 @@ class _CountExerciseState extends State<CountExercise> {
             border: OutlineInputBorder(),
           )
       ),
+      Container(
+          margin: const EdgeInsetsDirectional.only(top: 20),
+          child: Row( // Make row dynamic based on die roll
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _getImages(_imagesCount)
+          )
+      ),
+      Container(
+          margin: const EdgeInsetsDirectional.only(top: 20),
+          child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: _getAnswerButtons()
+          )
+      ),
+      Container(
+          margin: const EdgeInsetsDirectional.only(top: 20),
+          child: Text(_displayedAnswer)
+      )
       ]
     )
     );

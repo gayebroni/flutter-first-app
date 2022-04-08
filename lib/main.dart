@@ -53,53 +53,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  final int _buttonsCount = 5;
-  int _imagesCount =  1 + Random().nextInt(5);
-  String _displayedAnswer = "";
-
-
-  void _generateNumber () {
-    setState(() {
-      _imagesCount = 1 + Random().nextInt(_buttonsCount);
-      _displayedAnswer = "";
-    });
-  }
-
-  void _validateUserResponse(answer) {
-    setState(() {
-      if (answer == _imagesCount) {
-        _displayedAnswer = "Correct";
-      } else {
-        _displayedAnswer = "Incorrect";
-      }
-    });
-  }
-
-  List<ElevatedButton> _getAnswerButtons() {
-    List<ElevatedButton> buttons = [];
-    for (int answer = 1 ; answer < _buttonsCount + 1 ; answer ++) {
-      buttons.add(
-          ElevatedButton(
-            onPressed: () { _validateUserResponse(answer); },
-            child: Text(answer.toString())
-        )
-      );
-    }
-    return buttons;
-  }
-
-  List<Image> _getBirdImages(count) {
-    List<Image> images = [];
-    for (int i = 0 ; i < count ; i++) {
-      images.add(const Image(
-        width: 72,
-        image: NetworkImage(
-            'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'),
-      )
-      );
-    }
-    return images;
-  }
 
   void _linkToGame () async {
     setState(() {
@@ -162,56 +115,21 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             const CountExercise(
               question: "How many cats are there?",
+              // 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
               imageURL: "https://www.nj.com/resizer/trKrPevwYnYiJ3pB9WfuU-NK4VU=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.nj.com/home/njo-media/width2048/img/somerset_impact/photo/22028904-large.jpg",
             ),
-            Container(
-              child: Column(
-                children: <Widget> [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                     children: [
-                       IconButton(
-                         onPressed: _linkToGame,
-                         icon: const Icon(Icons.volume_down)
-                       ),
-                       const Text("How many birds are there?"),
-                       IconButton(
-                         onPressed: _generateNumber,
-                         icon: const Icon(Icons.casino)
-                       )
-                     ],
-                  ),
-                  const TextField(
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.translate),
-                      hintText: 'Write translation...',
-                      helperText: 'Question translation',
-                      border: OutlineInputBorder(),
-                    )
-                  ),
-                  Container(
-                    margin: const EdgeInsetsDirectional.only(top: 20),
-                    child: Row( // Make row dynamic based on die roll
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: _getBirdImages(_imagesCount)
-                    )
-                  ),
-                  Container(
-                    margin: const EdgeInsetsDirectional.only(top: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: _getAnswerButtons()
-                    )
-                  ),
-                  Container(
-                    margin: const EdgeInsetsDirectional.only(top: 20),
-                    child: Text(_displayedAnswer)
-                  )
-                ]
-              )
+/*
+            const CountExercise(
+              question: "How many countries are there?",
+              imageURL: "https://www.citypng.com/public/uploads/preview/-115982371371bqznj8bhc.png"),
+ */
+            const Divider(
+              height: 20,
+              endIndent: 0,
+              color: Colors.grey,
             ),
             Container(
-                margin: const EdgeInsetsDirectional.only(top: 400),
+              margin: const EdgeInsetsDirectional.only(top: 40),
               child: Column (
                 children: <Widget> [
                   const Text(

@@ -50,16 +50,20 @@ class _CountExerciseState extends State<CountExercise> {
     });
   }
 
-  List<Image> _getImages(count) {
-    List<Image> images = [];
+  List<ClipRRect> _getImages(count) {
+    List<ClipRRect> boxedImages = [];
     for (int i = 0 ; i < count ; i++) {
-      images.add(Image(
-        width: 72,
-        image: NetworkImage(widget.imageURL),
-      )
+      boxedImages.add(
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8.0),
+          child:Image(
+            width: 50,
+            image: NetworkImage(widget.imageURL),
+          )
+        )
       );
     }
-    return images;
+    return boxedImages;
   }
 
   @override

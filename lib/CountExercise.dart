@@ -15,7 +15,7 @@ class CountExercise extends StatefulWidget {
 class _CountExerciseState extends State<CountExercise> {
   int _imagesCount =  1 + Random().nextInt(5);
   final int _buttonsCount = 5;
-  String _displayedAnswer = "";
+  String _answer = "";
 
   void _doNothing() async {
   }
@@ -23,8 +23,18 @@ class _CountExerciseState extends State<CountExercise> {
   void _generateNumber () {
     setState(() {
       _imagesCount = 1 + Random().nextInt(_buttonsCount);
-      _displayedAnswer = "";
+      _answer = "";
     });
+  }
+
+  Widget _getAnswerSymbol() {
+    if (_answer == "Correct") {
+      return const Icon(Icons.check, color: Colors.green);
+    } else if (_answer == "Incorrect") {
+      return const Icon(Icons.clear, color: Colors.redAccent);
+    } else {
+      return const Text("Choose an answer");
+    }
   }
 
   List<ElevatedButton> _getAnswerButtons() {
@@ -33,19 +43,25 @@ class _CountExerciseState extends State<CountExercise> {
       buttons.add(
           ElevatedButton(
               onPressed: () { _validateUserResponse(answer); },
-              child: Text(answer.toString())
+              child: Text(
+                answer.toString(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold
+                )
+              )
           )
       );
     }
+    buttons.shuffle();
     return buttons;
   }
 
   void _validateUserResponse(answer) {
     setState(() {
       if (answer == _imagesCount) {
-        _displayedAnswer = "Correct";
+        _answer = "Correct";
       } else {
-        _displayedAnswer = "Incorrect";
+        _answer = "Incorrect";
       }
     });
   }
@@ -108,7 +124,7 @@ class _CountExerciseState extends State<CountExercise> {
       ),
       Container(
           margin: const EdgeInsetsDirectional.only(top: 20),
-          child: Text(_displayedAnswer)
+          child: _getAnswerSymbol(),
       )
       ]
     )

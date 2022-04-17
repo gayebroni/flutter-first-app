@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:Counter/CountExercise.dart';
+import 'package:Counter/NumberExercise.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -116,13 +117,19 @@ class _MyHomePageState extends State<MyHomePage> {
             const CountExercise(
               question: "How many cats are there?",
               // 'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg'
-              imageURL: "https://www.nj.com/resizer/trKrPevwYnYiJ3pB9WfuU-NK4VU=/1280x0/smart/advancelocal-adapter-image-uploads.s3.amazonaws.com/image.nj.com/home/njo-media/width2048/img/somerset_impact/photo/22028904-large.jpg",
+              imageURL: "https://upload.wikimedia.org/wikipedia/commons/b/bb/Kittyply_edit1.jpg"
             ),
 /*
             const CountExercise(
               question: "How many countries are there?",
               imageURL: "https://www.citypng.com/public/uploads/preview/-115982371371bqznj8bhc.png"),
  */
+            const Divider(
+              height: 20,
+              endIndent: 0,
+              color: Colors.grey,
+            ),
+            const NumberExercise(),
             const Divider(
               height: 20,
               endIndent: 0,

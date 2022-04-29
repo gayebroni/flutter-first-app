@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 class NumberExercise extends StatefulWidget {
@@ -13,10 +14,41 @@ class NumberExercise extends StatefulWidget {
 
 class _NumberExerciseState extends State<NumberExercise> {
   int _maxNumber =  2 + Random().nextInt(4);
+  static const int NO_SELECTION = 0;
+
+  int selectedNumber = NO_SELECTION;
   final _words = ["one", "two", "three", "four", "five"];
   String _displayedAnswer = "";
 
   void _doNothing() async {
+  }
+
+  void validateAnswer (answer) {
+    // Check does <answer> ("three") equals <selectedNumber> (4)
+    const answers = {
+      "one": 1,
+      "two": 2,
+      "three" : 3,
+      "four": 4,
+      "five": 5,
+    };
+
+    setState(() {
+      if (selectedNumber == answers[answer]) {
+        // Answer is correct
+        _displayedAnswer = "Correct";
+      } else {
+        // Answer is incorrect
+        _displayedAnswer = "Incorrect";
+      }
+    });
+
+  }
+
+  void toggleSelectedNumber(number) {
+    setState(() {
+      selectedNumber = selectedNumber == NO_SELECTION ? number : NO_SELECTION;
+    });
   }
 
   void _generateNumber () {
@@ -26,21 +58,26 @@ class _NumberExerciseState extends State<NumberExercise> {
     });
   }
 
-  List<Widget> _getWordAnswers() {
+  List<Widget> _getWordButtons() {
     List<Widget> answers = [];
     for(int i = 0; i < _maxNumber ; i ++) {
       answers.add(
-        Text(
-          _words[i],
-          style: const TextStyle(
-              color: Colors.amber,
-              fontSize: 22,
-              fontWeight: FontWeight.bold
+        ElevatedButton(
+          onPressed: selectedNumber == NO_SELECTION ?
+            null : () { validateAnswer(_words[i]); },
+          child: Text(
+            _words[i],
+            style: const TextStyle(
+              fontSize: 20,
+            )
+          ),
+          style: ElevatedButton.styleFrom(
+            primary: selectedNumber == NO_SELECTION ? Colors.grey : Colors.teal
           )
         )
       );
     }
-    answers.shuffle();
+    //answers.shuffle();
     return answers;
   }
 
@@ -49,23 +86,27 @@ class _NumberExerciseState extends State<NumberExercise> {
     for (int i = 1 ; i < _maxNumber + 1  ; i++) {
       buttons.add(
           ElevatedButton(
-              onPressed: () {_doNothing(); },
+              onPressed: selectedNumber == NO_SELECTION || selectedNumber == i ?
+                  () { toggleSelectedNumber(i); } :
+                  null,
               child: Text(
                   i.toString(),
                   style: const TextStyle(
                     fontWeight: FontWeight.bold
-                  ))
+                  )
+              ),
+              style: ElevatedButton.styleFrom(
+                primary: selectedNumber == i ?
+                  Colors.teal :
+                  selectedNumber == NO_SELECTION ?
+                    Colors.amber[700] :
+                    Colors.grey
+              )
           )
       );
     }
-    buttons.shuffle();
+    //buttons.shuffle();
     return buttons;
-  }
-
-  void _validateUserResponse(answer) {
-    setState(() {
-      _displayedAnswer = "Incorrect";
-    });
   }
 
   @override
@@ -101,8 +142,12 @@ class _NumberExerciseState extends State<NumberExercise> {
                   children: _getNumberButtons()
               )
           ),
-          Column(
-              children: _getWordAnswers(),
+          Container(
+            margin: const EdgeInsetsDirectional.only(top: 80),
+            child: Row(
+                children: _getWordButtons(),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ),
           ),
           Container(
               margin: const EdgeInsetsDirectional.only(top: 20),

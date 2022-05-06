@@ -15,54 +15,73 @@ class CountExercise extends StatefulWidget {
 class _CountExerciseState extends State<CountExercise> {
   int _imagesCount =  1 + Random().nextInt(5);
   final int _buttonsCount = 5;
-  String _answer = "";
+  String _answerFeedback = "";
+  List<int> _answersAttempts = [];
 
   void _doNothing() async {
   }
 
-  void _generateNumber () {
+  void _resetGame () {
     setState(() {
       _imagesCount = 1 + Random().nextInt(_buttonsCount);
-      _answer = "";
+      _answerFeedback = "";
+      _answersAttempts = [];
     });
   }
 
   Widget _getAnswerSymbol() {
-    if (_answer == "Correct") {
+    if (_answerFeedback == "Correct") {
       return const Icon(Icons.check, color: Colors.green);
-    } else if (_answer == "Incorrect") {
-      return const Icon(Icons.clear, color: Colors.redAccent);
+    } else if (_answersAttempts.isEmpty) {
+      return const Icon(Icons.question_answer);
     } else {
-      return const Text("Choose an answer");
+      return const Icon(Icons.clear, color: Colors.redAccent);
     }
+  }
+
+  Widget _getAnswerAttempts() {
+    return Text(" " + _answersAttempts.length.toString() + " attempts");
   }
 
   List<ElevatedButton> _getAnswerButtons() {
     List<ElevatedButton> buttons = [];
-    for (int answer = 1 ; answer < _buttonsCount + 1 ; answer ++) {
+    for (int choiceNumber = 1 ; choiceNumber < _buttonsCount + 1 ; choiceNumber ++) {
+      // Look at the answer attempts
+      //   If attempt found for this button change color
+      bool hasPriorAttempt = _answersAttempts.contains(choiceNumber);
+
+      // What color?
+      //   -> Default (orange) if not attempts made
+      //   -> Success (green) if attempt correct
+      //   -> Error (red) if attempt incorrect
+      Color? buttonColor = Colors.amber[700];
+      if (hasPriorAttempt) {
+         buttonColor = (_imagesCount == choiceNumber) ? Colors.green : Colors.redAccent;
+      }
+
       buttons.add(
           ElevatedButton(
-              onPressed: () { _validateUserResponse(answer); },
+              onPressed: () { _validateUserResponse(choiceNumber); },
               child: Text(
-                answer.toString(),
+                  choiceNumber.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold
                 )
+              ),
+              style: ElevatedButton.styleFrom(
+                  primary: buttonColor
               )
           )
       );
     }
-    buttons.shuffle();
+    //buttons.shuffle();
     return buttons;
   }
 
-  void _validateUserResponse(answer) {
+  void _validateUserResponse(answerAttempt) {
     setState(() {
-      if (answer == _imagesCount) {
-        _answer = "Correct";
-      } else {
-        _answer = "Incorrect";
-      }
+      _answerFeedback = (answerAttempt == _imagesCount) ? "Correct" : "Incorrect";
+      _answersAttempts.add(answerAttempt);
     });
   }
 
@@ -95,7 +114,7 @@ class _CountExerciseState extends State<CountExercise> {
           ),
           Text(widget.question),
           IconButton(
-              onPressed: _generateNumber,
+              onPressed: _resetGame,
               icon: const Icon(Icons.casino)
           )
         ],
@@ -124,7 +143,13 @@ class _CountExerciseState extends State<CountExercise> {
       ),
       Container(
           margin: const EdgeInsetsDirectional.only(top: 20),
-          child: _getAnswerSymbol(),
+          child: Row (
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _getAnswerSymbol(),
+              _getAnswerAttempts()
+            ],
+          )
       )
       ]
     )

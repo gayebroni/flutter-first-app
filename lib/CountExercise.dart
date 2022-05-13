@@ -21,7 +21,7 @@ class _CountExerciseState extends State<CountExercise> {
   void _doNothing() async {
   }
 
-  void _resetGame () {
+  void _resetExercise () {
     setState(() {
       _imagesCount = 1 + Random().nextInt(_buttonsCount);
       _answerFeedback = "";
@@ -114,7 +114,7 @@ class _CountExerciseState extends State<CountExercise> {
           ),
           Text(widget.question),
           IconButton(
-              onPressed: _resetGame,
+              onPressed: _resetExercise,
               icon: const Icon(Icons.casino)
           )
         ],

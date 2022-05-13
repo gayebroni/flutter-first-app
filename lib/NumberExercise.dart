@@ -19,6 +19,7 @@ class _NumberExerciseState extends State<NumberExercise> {
   int selectedNumber = NO_SELECTION;
   final _words = ["one", "two", "three", "four", "five"];
   String _displayedAnswer = "";
+  List<int> _answersAttempts = [];
 
   void _doNothing() async {
   }
@@ -41,6 +42,7 @@ class _NumberExerciseState extends State<NumberExercise> {
         // Answer is incorrect
         _displayedAnswer = "Incorrect";
       }
+      _answersAttempts.add(answers[answer] ?? 1);
     });
 
   }
@@ -48,31 +50,55 @@ class _NumberExerciseState extends State<NumberExercise> {
   void toggleSelectedNumber(number) {
     setState(() {
       selectedNumber = selectedNumber == NO_SELECTION ? number : NO_SELECTION;
+      _answersAttempts = [];
     });
   }
 
-  void _generateNumber () {
+  void _resetExercise () {
     setState(() {
       _maxNumber = 2 + Random().nextInt(4);
       _displayedAnswer = "";
+      _answersAttempts = [];
     });
   }
 
   List<Widget> _getWordButtons() {
     List<Widget> answers = [];
-    for(int i = 0; i < _maxNumber ; i ++) {
+    for(int wordIndex = 0; wordIndex < _maxNumber ; wordIndex ++) {
+      // Look at the answer attempts
+      //   If attempt found for this button change color
+      bool hasPriorAttempt = _answersAttempts.contains(wordIndex + 1);
+
+      // What color?
+      //   -> Inactive/Disabled (grey)
+      //   -> Active (amber)
+      //   -> Active and Success (green)
+      //   -> Active and Error (red)
+      Color? buttonColor = Colors.grey;
+
+      if (selectedNumber != NO_SELECTION) { // If there is a selection
+        buttonColor =  Colors.amber[700];
+
+        if (hasPriorAttempt && selectedNumber == wordIndex + 1) { // If selection and correct
+          buttonColor = Colors.green;
+        }
+        if (hasPriorAttempt && selectedNumber != wordIndex + 1) { // If selection and incorrect
+          buttonColor = Colors.redAccent;
+        }
+      }
+
       answers.add(
         ElevatedButton(
           onPressed: selectedNumber == NO_SELECTION ?
-            null : () { validateAnswer(_words[i]); },
+            null : () { validateAnswer(_words[wordIndex]); },
           child: Text(
-            _words[i],
+            _words[wordIndex],
             style: const TextStyle(
               fontSize: 20,
             )
           ),
           style: ElevatedButton.styleFrom(
-            primary: selectedNumber == NO_SELECTION ? Colors.grey : Colors.teal
+            primary: buttonColor
           )
         )
       );
@@ -97,7 +123,7 @@ class _NumberExerciseState extends State<NumberExercise> {
               ),
               style: ElevatedButton.styleFrom(
                 primary: selectedNumber == i ?
-                  Colors.teal :
+                  Colors.blueAccent :
                   selectedNumber == NO_SELECTION ?
                     Colors.amber[700] :
                     Colors.grey
@@ -122,7 +148,7 @@ class _NumberExerciseState extends State<NumberExercise> {
               ),
               const Text("Match the numbers with the word form"),
               IconButton(
-                  onPressed: _generateNumber,
+                  onPressed: _resetExercise,
                   icon: const Icon(Icons.casino)
               )
             ],
